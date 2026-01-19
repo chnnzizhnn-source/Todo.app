@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo App</title>
+</head>
+<body>
+    <div class="todo-app">
+        <div class="title">Todo App</div>
+        <div class="todo-form">
+            <input class='todo-input' type="text" placeholder="Add a todo">
+            <div class="todo-button">Add it</div>
+        </div>
+        <div class="todo-list">
+            <div class="item completed">
+                <div>
+                    <input type="checkbox" checked>
+                    <span class="name">吃饭</span>
+                </div>
+                <div class="del">del</div>
+            </div>
+            <div class="item">
+                <div>
+                    <input type="checkbox">
+                    <span class="name">睡觉</span>
+                </div>
+                <div class="del">del</div>
+            </div>
+            <div class="item">
+                <div>
+                    <input type="checkbox">
+                    <span class="name">打游戏</span>
+                </div>
+                <div class="del">del</div>
+            </div>
+        </div>
+    </div>  
+<style>
+    .todo-input::placeholder{
+        color: #999;
+        font-size: 14px;
+        font-style: italic;
+    }
+    .completed{
+        text-decoration: line-through;
+        opacity: 0.4;
+    }
+    .del{
+        color: red;
+        cursor: pointer;
+    }
+    .item{
+       align-items: center;
+       justify-content: space-between;
+       display: flex;
+       box-sizing: border-box;
+       width: 80%; 
+       height: 50px;
+       margin: 8px auto;
+       padding: 16px;
+       border-radius: 20px;
+       box-shadow: rgba(149,157,165,0.2) 0px 8px 20px;
+    }
+    .todo-button{
+        outline: none;
+        cursor: pointer;
+        user-select: none;
+        box-sizing: border-box;
+        color: #ffff;
+        padding-top: 16px;
+        width: 100px;
+        height: 55px;
+        border-radius: 0 20px 20px 0;
+        text-align: center;
+        background: linear-gradient(
+            to left,
+            rgb(30, 1, 1),
+            rgb(107, 2, 2)
+        )
+    }
+    .todo-input{
+        flex: 1;
+        border: 1px solid #dfe1e5;
+        outline: none;
+        height: 50px;
+        border-radius: 20px 0 0 20px;
+        padding-left: 2%;
+    }
+    body {
+        background: linear-gradient(
+            to left,
+            rgb(30, 1, 1),
+            rgb(107, 2, 2)
+        );       
+    }
+    .todo-app {
+        width: 98%;
+        height: auto;
+        min-height: 500px;
+        background-color: #ffff;
+        border-radius: 10px;
+        margin-top: 40px;
+        margin-left: 1%;
+        box-sizing: border-box;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+    .title{
+        font-size: 30px;
+        text-align: center;
+        font-weight: 700;
+    }
+    .todo-form{
+        margin: 10px auto;
+        display: flex; 
+        width: 80%;
+        align-items: center;
+        gap: 0px;
+        margin-bottom: 20px;
+    }
+</style>
+
+<script>
+    // 获取元素
+    const todoInput = document.querySelector('.todo-input');
+    const todoButton = document.querySelector('.todo-button');
+    const todoList = document.querySelector('.todo-list');
+
+    // 添加todo的函数
+    function addTodo() {
+        const todoText = todoInput.value.trim();
+        
+        // 检查输入是否为空
+        if (todoText === '') {
+            alert('请输入待办事项!');
+            return;
+        }
+
+        // 创建新的todo项
+        const newItem = document.createElement('div');
+        newItem.className = 'item';
+        newItem.innerHTML = `
+            <div>
+                <input type="checkbox">
+                <span class="name">${todoText}</span>
+            </div>
+            <div class="del">del</div>
+        `;
+
+        // 添加到列表中
+        todoList.appendChild(newItem);
+
+        // 清空输入框
+        todoInput.value = '';
+
+        // 为新项添加事件监听
+        attachEventListeners(newItem);
+    }
+
+    // 为todo项添加事件监听的函数
+    function attachEventListeners(item) {
+        // 复选框事件
+        const checkbox = item.querySelector('input[type="checkbox"]');
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                item.classList.add('completed');
+            } else {
+                item.classList.remove('completed');
+            }
+        });
+
+        // 删除按钮事件
+        const delButton = item.querySelector('.del');
+        delButton.addEventListener('click', function() {
+            item.remove();
+        });
+    }
+
+    // 点击按钮添加todo
+    todoButton.addEventListener('click', addTodo);
+
+    // 按回车键添加todo
+    todoInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            addTodo();
+        }
+    });
+
+    // 为现有的todo项添加事件监听
+    document.querySelectorAll('.item').forEach(item => {
+        attachEventListeners(item);
+    });
+</script>
+</body>
+</html>
